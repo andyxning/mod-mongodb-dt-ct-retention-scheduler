@@ -70,11 +70,6 @@ class MongodbDtCtRetentionScheduler(BaseModule):
                                 'password', 'shinken_dt_ct_retention_scheduler')
         self.url_options = getattr(mod_conf, 'url_options', '')
         
-        try:
-            self.timeout = int(getattr(mod_conf, 'timeout', '50'))
-        except:
-            self.timeout = 50
-        
     def _set_replica_set(self, replica_set_str):
         raw_members = replica_set_str.split(',')
         members = []

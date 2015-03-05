@@ -29,7 +29,7 @@ Note: Replica set MongoDB instances is the recommended way to work with.
 > replica_set       host1:port1, host2:port2, host3:port3    
 > url_options   w=1&wtimeoutMS=3000&journal=true&readPreference=secondary&replicaSet=shinken&connectTimeoutMS=3000  
 > database     shinken_dt_ct_retention_scheduler  
-> username     shinken_dt_ct_retention_scheduler
+> username     shinken_dt_ct_retention_scheduler  
 > password     shinken_dt_ct_retention_scheduler
 
 ### Stand alone
