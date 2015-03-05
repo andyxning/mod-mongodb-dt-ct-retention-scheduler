@@ -12,7 +12,7 @@ from multiprocessing import Process
 try:
     from pymongo import MongoReplicaSetClient, MongoClient
     from pymongo.errors import (ConnectionFailure, InvalidURI,
-                                ConfigurationError)
+                                DuplicateKeyError, ConfigurationError)
 except ImportError:
     raise Exception('Python binding for MongoDB has not been installed. '
                     'Please install "pymongo" first')
@@ -203,16 +203,22 @@ class MongodbDtCtRetentionScheduler(BaseModule):
                                     }
                     self.services.insert(service_info)
                 for comment in comments:
-                    if not self.comments.find({'_id': comment.get('_id')}).count():
+                    try:
                         self.comments.insert(comment)
+                    except DuplicateKeyError:
+                        pass
+                    else:
                         cursor = self.services.find({'_id': _id})
                         comment_ids = cursor[0].get('comment_ids')
                         comment_ids.append(comment.get('_id'))
                         self.services.update({'_id': _id},
                                              {'$set': {'comment_ids': comment_ids}})
                 for downtime in downtimes:
-                    if not self.downtimes.find({'_id': downtime.get('_id')}).count():
+                    try:
                         self.downtimes.insert(downtime)
+                    except DuplicateKeyError:
+                        pass
+                    else:
                         self.services.find({'_id': _id})
                         downtime_ids = cursor[0].get('downtime_ids')
                         downtime_ids.append(downtime.get('_id'))
