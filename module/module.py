@@ -142,7 +142,7 @@ class MongodbDtCtRetentionScheduler(BaseModule):
                         'not been accomplished but this should not happen. '
                         'We should stop it.')
             os.kill(self.task.pid, signal.SIGKILL)
-            self.task = None
+        self.task = None
         # must be args=(retention,) not args=(retention)
         self.task = Process(target=self._hook_save_retention, args=(retention,))
         self.task.daemon = True
